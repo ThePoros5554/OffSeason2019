@@ -1,0 +1,68 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
+package frc.robot.commands;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
+import poroslib.triggers.JoyAxis;
+
+public class ActivateArm extends Command {
+
+  private double speed;
+  private JoyAxis axis;
+
+  public ActivateArm(double speed) {
+    this.speed = speed;
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+  }
+  public ActivateArm(JoyAxis axis) {
+    this.axis = axis;
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+  }
+
+  // Called just before this Command runs the first time
+  @Override
+  protected void initialize() {
+  }
+
+  // Called repeatedly when this Command is scheduled to run
+  @Override
+  protected void execute() {
+    if(axis == null)
+    {
+      Robot.arm.set(ControlMode.PercentOutput,speed);
+
+    }
+    else{
+      Robot.arm.set(ControlMode.PercentOutput,axis.GetAxisValue());
+    }
+  }
+
+  // Make this return true when this Command no longer needs to run execute()
+  @Override
+  protected boolean isFinished() {
+    return false;
+  }
+
+  // Called once after isFinished returns true
+  @Override
+  protected void end() {
+    Robot.arm.set(ControlMode.PercentOutput,0);
+  }
+
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
+  @Override
+  protected void interrupted() {
+    end();
+  }
+}
