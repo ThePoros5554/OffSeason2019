@@ -19,11 +19,13 @@ public class ActivateArm extends Command {
   private JoyAxis axis;
 
   public ActivateArm(double speed) {
+    requires(Robot.Arm);
     this.speed = speed;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
   public ActivateArm(JoyAxis axis) {
+    requires(Robot.Arm);
     this.axis = axis;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
