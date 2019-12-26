@@ -7,8 +7,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.ActivateArm;
 import frc.robot.commands.ActivateElevator;
+import frc.robot.commands.MoveArm;
+import frc.robot.subsystems.Arm.WristPos;
 import poroslib.triggers.JoyAxis;
 import poroslib.triggers.JoyAxisPart;
 import poroslib.triggers.SmartJoystick;
@@ -18,16 +21,16 @@ import poroslib.triggers.SmartJoystick;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-////////////////////////ports///////////////////////////////
-  private static final int kWristAxis = 1; // L
-    private static final int kElevatorUpAxis = 3; // RT
-    private static final int kElevatorDownAxis = 2;//LT
-    ///////////////////////////////////////////////////////////
+////////////////////////axis///////////////////////////////
+  private final int kWristAxis = 1; // L
+  private final int kElevatorUpAxis = 3; // RT
+  private final int kElevatorDownAxis = 2;//LT
+  ///////////////////////btns/////////////////////////////////
+  private final int kLowModeBtnIdx = 2;//B
 
   public static SmartJoystick driverJoy;
   public static SmartJoystick operatorJoy;
   
-
 
   /////////////////////////Commands/////////////////////////
   //////////////////////////////////////////////////////////
@@ -41,11 +44,15 @@ public class OI {
     driverJoy.setRotateAxis(4);
 
     ////////////////////////////////Activators////////////////
-    JoyAxisPart wristUpAxis = new JoyAxisPart(operatorJoy, kWristAxis, -1, 1, 1, -1, 0.2, 1);
-    JoyAxisPart wristDownAxis = new JoyAxisPart(operatorJoy, kWristAxis, -1, 1, 1, -1, -1, -0.2);
+    //GenericHID joystick, int axisNumber, double newMinValue, double newMaxValue, double oldMinValue, double oldMaxValue,
+    //double newAxisLowLimit, double newAxisUpperLimit
+    JoyAxisPart wristUpAxis = new JoyAxisPart(operatorJoy, kWristAxis, -1, 1, 1, -1, 0.17, 1);
+    JoyAxisPart wristDownAxis = new JoyAxisPart(operatorJoy, kWristAxis, -1, 1, 1, -1, -1, -0.17);
 
-    JoyAxis elevatorUpAxis = new JoyAxis(operatorJoy, kElevatorDownAxis, 0, 1, -1, 0);
-    JoyAxis elevatorDownAxis = new JoyAxis(operatorJoy, kElevatorUpAxis, 0, -1, -1, 0);
+    JoyAxis elevatorUpAxis = new JoyAxis(operatorJoy, kElevatorDownAxis, 0.236, 1, 0, 1);
+    JoyAxis elevatorDownAxis = new JoyAxis(operatorJoy, kElevatorUpAxis, 0.236, -0.8, 0, 1);
+
+    JoystickButton lowModeBtn = new JoystickButton(operatorJoy, kLowModeBtnIdx);
   ///////////////////////////////////////////////////////////
 
   //////////////////////////////////////////////////////////Commands///////
@@ -54,6 +61,8 @@ public class OI {
 
     ActivateElevator elevatorDown = new ActivateElevator(elevatorDownAxis);
     ActivateElevator elevatorUp = new ActivateElevator(elevatorUpAxis);
+
+    MoveArm moveArm = new MoveArm(WristPos.HIGH_CARGO.getPosition());
     /////////////////////////////////////////////////////
 
 
@@ -63,5 +72,7 @@ public class OI {
     
     elevatorUpAxis.whileActive(elevatorUp);
     elevatorDownAxis.whileActive(elevatorDown);
+
+    lowModeBtn.whenPressed(moveArm);
   }
 }

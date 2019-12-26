@@ -39,11 +39,11 @@ public class ActivateElevator extends Command {
   protected void execute() {
     if(axis == null)
     {
-      Robot.elevator.set(ControlMode.PercentOutput,speed);
+      Robot.elevator.setPercentOutput(speed);
 
     }
     else{
-      Robot.elevator.set(ControlMode.PercentOutput,axis.GetAxisValue());
+      Robot.elevator.setPercentOutput(axis.GetAxisValue());
     }
   }
 
@@ -56,7 +56,7 @@ public class ActivateElevator extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.elevator.set(ControlMode.PercentOutput, 0);
+    Robot.elevator.stop();
   }
 
   // Called when another command which requires one or more of the same

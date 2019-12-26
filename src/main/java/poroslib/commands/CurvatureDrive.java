@@ -47,7 +47,6 @@ public class CurvatureDrive extends Command
     // Called just before this Command runs the first time
     protected void initialize()
     {
-        System.out.println("initialize");
 
     }
 
@@ -55,7 +54,6 @@ public class CurvatureDrive extends Command
     protected void execute()
     {
 
-        System.out.println(this.joy.getSpeedAxis());
     	double speedValue = this.joy.getSpeedAxis();
         double rotateValue =  this.joy.getRotateAxis();
         

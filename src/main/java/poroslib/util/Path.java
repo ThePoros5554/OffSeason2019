@@ -5,7 +5,6 @@ import java.io.File;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.PathfinderFRC;
 import jaci.pathfinder.Trajectory;
 
 //If at some point in the future, want to move to hash style, add properties 

@@ -7,8 +7,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DozerDriveTrain;
 import frc.robot.subsystems.Elevator;
@@ -26,6 +29,7 @@ public class Robot extends TimedRobot {
   public static OI oi;
   public static Arm arm;
   public static Elevator elevator;
+  public static PowerDistributionPanel pdp;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -34,9 +38,12 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     driveTrain = new DozerDriveTrain();
-    oi = new OI();
+    // pdp = new PowerDistributionPanel(0);
     arm = new Arm();
     elevator = new Elevator();
+    
+    oi = new OI();
+
   }
 
   /**
@@ -49,8 +56,25 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-  }
+    SmartDashboard.putNumber("arm", arm.getOutputCurrent());
+    SmartDashboard.putNumber("armPos", arm.getCurrentPosition());
+    SmartDashboard.putNumber("elePos", elevator.getCurrentPosition());
+    SmartDashboard.putBoolean("eleSwitch", driveTrain.getIsElevatorLimit());
 
+    printCurrent();
+  }
+  
+  public void printCurrent(){
+    //SmartDashboard.putNumber("FrontLeft_port", pdp.getCurrent(RobotMap.kFrontLeftPort)); //port 0
+    // SmartDashboard.putNumber("FrontRight_port", pdp.getCurrent(RobotMap.kFrontRightPort)); //port 1
+    // SmartDashboard.putNumber("RearLeft_port", pdp.getCurrent(RobotMap.kRearLeftPort)); //port 1
+    // SmartDashboard.putNumber("Elevator_port", pdp.getCurrent(RobotMap.kElevatorPort)); //port 2
+    // SmartDashboard.putNumber("RearRight_port", pdp.getCurrent(RobotMap.kRearRightPort)); //port 3
+    // SmartDashboard.putNumber("Arm_port", pdp.getCurrent(RobotMap.kArmPort)); //port 3
+    // SmartDashboard.putNumber("MiddleLeft_port", pdp.getCurrent(RobotMap.kMiddleLeftPort)); //port 5
+    // SmartDashboard.putNumber("MiddleRight_port", pdp.getCurrent(RobotMap.kMiddleRightPort)); //port 6
+   // System.out.println( pdp.getCurrent(RobotMap.kFrontLeftPort));
+  }
   /**
    * This function is called once each time the robot enters Disabled mode.
    * You can use it to reset any subsystem information you want to clear when
@@ -99,6 +123,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
   }
 
   /**

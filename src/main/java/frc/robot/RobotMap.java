@@ -21,6 +21,7 @@ public class RobotMap {
   public static final int kMiddleRightPort = 6; // Talon SRX
   public static final int kRearLeftPort = 1; // Victor SPX
   public static final int kRearRightPort = 3; // Victor SPX
+  
   public static final int kDriverJoyPort = 0;
   public static final int kOperateJoyPort = 1;
   public static final int kArmPort = 3;
