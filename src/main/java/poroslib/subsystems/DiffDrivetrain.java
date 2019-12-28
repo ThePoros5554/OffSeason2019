@@ -42,7 +42,7 @@ public abstract class DiffDrivetrain extends Drivetrain implements PidActionSubs
     	
     	if (this.IsReversed())
     	{
-    		driver.arcadeDrive(-speed,-rotate, this.isSquared);
+    		driver.arcadeDrive(-speed,rotate, this.isSquared);
     	}
     	else
     	{

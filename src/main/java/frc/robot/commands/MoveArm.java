@@ -11,48 +11,33 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import poroslib.triggers.JoyAxis;
 
-public class ActivateArm extends Command {
+public class MoveArm extends Command {
 
-  private double speed;
-  private JoyAxis axis;
+  private int position;
 
-  public ActivateArm(double speed) {
-    requires(Robot.Arm);
-    this.speed = speed;
+  public MoveArm(int pos) {
     // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-  }
-  public ActivateArm(JoyAxis axis) {
-    requires(Robot.Arm);
-    this.axis = axis;
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+    requires(Robot.arm);
+
+    position = pos;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.arm.goTo(position);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(axis == null)
-    {
-      Robot.arm.setPercentOutput(speed);
-
-    }
-    else{
-      Robot.arm.setPercentOutput(axis.GetAxisValue());
-    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return Robot.arm.atTarget();
   }
 
   // Called once after isFinished returns true

@@ -16,6 +16,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.OI;
 import frc.robot.RobotMap;
 import poroslib.commands.CurvatureDrive;
@@ -61,7 +63,11 @@ public class DozerDriveTrain extends DiffDrivetrain {
     rearLeft.setInverted(InvertType.FollowMaster);
     rearRight.setInverted(InvertType.FollowMaster);
 
+    middleLeft.overrideLimitSwitchesEnable(false);
+
     setNeutralMode(neutralMode);
+
+
 
     masterRight.set(ControlMode.PercentOutput, 0);
     masterLeft.set(ControlMode.PercentOutput, 0);
@@ -89,8 +95,6 @@ public class DozerDriveTrain extends DiffDrivetrain {
 
   @Override
   public void initDefaultCommand() {
-    System.out.println("initdefaultcommand");
-
     setDefaultCommand(new CurvatureDrive(this, OI.driverJoy, 0.6, 1, 0.3));
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
@@ -111,5 +115,17 @@ public class DozerDriveTrain extends DiffDrivetrain {
     return navx.getYaw();
   }
 
-  
+  public void presentStuff(){
+    Shuffleboard.getTab("3").add("Simple Dial", this.masterLeft.getOutputCurrent());
+  }
+
+  public int GetEleSwitchDeviceId()
+  {
+    return middleLeft.getDeviceID();
+  }
+
+  public boolean getIsElevatorLimit()
+  {
+    return !middleLeft.getSensorCollection().isRevLimitSwitchClosed();
+  }
 }
